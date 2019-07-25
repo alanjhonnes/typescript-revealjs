@@ -1,49 +1,208 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+  <title>reveal.js</title>
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/monokai.css">
+  <link rel="stylesheet"
+        href="css/reset.css">
+  <link rel="stylesheet"
+        href="css/reveal.css">
+  <link rel="stylesheet"
+        href="css/bootstrap-grid.min.css">
+  <link rel="stylesheet"
+        href="css/theme/mjv.css">
+  <link rel="stylesheet"
+        href="css/presentation.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet"
+        href="lib/css/monokai.css">
 
-		<script src="js/reveal.js"></script>
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  </script>
+</head>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true }
-				]
-			});
-		</script>
-	</body>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2>
+          TypeScript<br>
+          Além do Básico
+        </h2>
+        <p>Alan Jhonnes</p>
+        <p>Software Architect @ MJV</p>
+      </section>
+      <section>
+        <h2>Tópicos</h2>
+        <ul>
+          <li>Tipos básicos e especiais</li>
+          <li>Tipos utilitários</li>
+          <li>Modificadores</li>
+          <li>Unions e Discriminated Unions</li>
+          <li>Intersection types</li>
+          <li>Type-guards</li>
+          <li>Mixins</li>
+          <li>Conditional types</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Tipos básicos e primitivos</h2>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="circle">
+            <span>string</span>
+          </div>
+          <div class="circle">
+            <span>number</span>
+          </div>
+          <div class="circle">
+            <span>object</span>
+          </div>
+          <div class="circle">
+            <span>function</span>
+          </div>
+          <div class="circle">
+            <span>bigint</span>
+          </div>
+        </div>
+        <div class="mt-5 fragment">
+          <h2 class="text-left">strictNullsChecks</h2>
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="circle mx-2">
+              <span>null</span>
+            </div>
+            <div class="circle mx-2">
+              <span>undefined</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2>Tipos especiais</h2>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="circle">
+            <span>any</span>
+          </div>
+          <div class="circle">
+            <span>unknown</span>
+          </div>
+          <div class="circle">
+            <span>void</span>
+          </div>
+          <div class="circle">
+            <span>never</span>
+          </div>
+        </div>
+      </section>
+      <section>
+        <section>
+          <h2>Unions</h2>
+
+          <div class="union d-flex align-items-center">
+            <div class="d-flex justify-content-between align-items-center flex-grow-1">
+              <div class="circle">
+                <span>string</span>
+              </div>
+              <div class="circle">
+                <span>number</span>
+              </div>
+              <div class="circle">
+                <span>null</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div>boolean</div>
+          <div class="union d-flex align-items-center">
+            <div class="d-flex justify-content-center align-items-center flex-grow-1">
+              <div class="circle mx-4 flex-grow-1">
+                <span>true</span>
+              </div>
+              <div class="circle mx-4 flex-grow-1">
+                <span>false</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div>User</div>
+          <div class="d-flex align-items-center">
+            <pre class="mx-2 flex-grow-0">
+              <code class="hlts" data-trim>
+                interface Anonymous {
+                  name: string;
+                }
+
+                interface LoggedUser {
+                  id: string;
+                  name: string;
+                  email: string;
+                }
+
+                type User = 
+                  | Anonymous
+                  | LoggedUser;
+              </code>
+            </pre>
+
+            <div class="union d-flex align-items-center flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="circle mx-2">
+                  <span>
+                    Anonymous
+                  </span>
+                </div>
+                <div class="circle mx-2">
+                  <span>LoggedUser</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </section>
+      </section>
+      <section>
+        <h2>Type-Guards</h2>
+      </section>
+      <section>
+        <h1>Perguntas</h1>
+      </section>
+      <section>
+        <h1>Obrigado!</h1>
+      </section>
+    </div>
+  </div>
+
+  <script src="js/reveal.js"></script>
+
+  <script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+      dependencies: [
+        { src: 'plugin/markdown/marked.js' },
+        { src: 'plugin/markdown/markdown.js' },
+        { src: 'plugin/notes/notes.js', async: true },
+        { src: 'plugin/highlight/highlight.js', async: true }
+      ]
+    });
+  </script>
+</body>
+
 </html>
