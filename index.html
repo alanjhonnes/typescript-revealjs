@@ -6,7 +6,7 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <title>reveal.js</title>
+  <title>TypeScript - Além do Básico</title>
 
   <link rel="stylesheet"
         href="css/reset.css">
@@ -72,9 +72,6 @@
           <div class="circle">
             <span>function</span>
           </div>
-          <div class="circle">
-            <span>bigint</span>
-          </div>
         </div>
         <div class="mt-5 fragment">
           <h2 class="text-left">strictNullsChecks</h2>
@@ -87,6 +84,16 @@
             </div>
           </div>
         </div>
+        <aside class="notes">
+          Os tipos básicos são bem simples, string, number, object para representar a base de um objeto, e também temos
+          'function' para representar as funções.
+          Como as funçoes no javascript são objetos de primeira classe, ou seja, você pode usar funções como valores e
+          armazenar em variáveis.
+
+          Ativando a flag de strictNullChecks, ganhamos mais dois tipos muito importantes, null e undefined. Usados
+          sozinhos, eles não tem muita utilidade,
+          mas veremos como podemos usar esses tipos para tornar nosso código melhor.
+        </aside>
       </section>
       <section>
         <h2>Tipos especiais</h2>
@@ -104,27 +111,53 @@
             <span>never</span>
           </div>
         </div>
+
+        <aside class="notes">
+          Esses tipos servem para representar casos especiais.
+
+          O uso do any serve para basicamente desabilitar a checagem de tipos.
+          Geralmente é usado quando estamos iniciando e não sabemos direito como tipar alguma interface corretamente.
+          No fim dessa palestra, vocês verão que a grande maioria dos casos é facilmente tipável.
+
+          O tipo void é usado para representar uma função sem retorno, é equivalente a usar o undefined, mas de forma
+          mais semântica para indicar realmente que a função não retorna nada.
+
+          O tipo unknown é o inverso do any, serve para quando realmente você quer que o Typescript te force a fazer
+          rigorosas checagens antes de você acessar ou usar a variavél.
+
+          O tipo never representa um tipo que não deveria acontecer nunca. O exemplo mais simples é uma função que
+          sempre dá erro, nunca chegando a finalizar,
+          portanto o tipo da função não é nem void nem undefined e sim, never.
+        </aside>
+      </section>
+      <section>
+        <h2>Modificadores</h2>
+        <ul>
+          <li>Readonly</li>
+          <li>Optional</li>
+        </ul>
+
+        <pre class="flex-grow-0 mr-5"><code class="p-4 hlts" data-trim>
+          interface User {
+            readonly id?: string;
+            name: string;
+          }
+        </code></pre>
+
+
+        <aside class="notes">
+          Os modificadores servem para alterar propriedades de objetos. O modificador readonly é muito útil quando
+          queremos utilizar o conceito de imutabilidade nos nossos projetos.
+
+          O modificador optional serve para indicar que uma propriedade pode ou não estar presente em um objeto.
+          Ela é bem similar ao usar o tipo undefined.
+        </aside>
       </section>
       <section>
         <section>
           <h2>Unions</h2>
 
-          <div class="union d-flex align-items-center">
-            <div class="d-flex justify-content-between align-items-center flex-grow-1">
-              <div class="circle">
-                <span>string</span>
-              </div>
-              <div class="circle">
-                <span>number</span>
-              </div>
-              <div class="circle">
-                <span>null</span>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        <section>
           <div>boolean</div>
           <div class="union d-flex align-items-center">
             <div class="d-flex justify-content-center align-items-center flex-grow-1">
@@ -136,13 +169,38 @@
               </div>
             </div>
           </div>
+
+          <aside class="notes">
+            As uniões servem para representar conjuntos de tipos.
+            Um exemplo bem simples é o conjunto de booleanos, onde boolean é a união de dois tipos, o tipo true e o tipo
+            false.
+          </aside>
+        </section>
+
+        <section>
+            <div>string</div>
+          <div class="union d-flex align-items-center">
+            <div class="d-flex justify-content-between align-items-center flex-grow-1">
+              <div class="circle">
+                <span>'a'</span>
+              </div>
+              <div class="circle">
+                <span>'b'</span>
+              </div>
+              <div class="circle">
+                <span>'...'</span>
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            O tipo string é um conjunto de todos os tipos possiveis de strings, como 'a', 'b' ou 'c'.
+          </aside>
         </section>
 
         <section>
           <div>User</div>
           <div class="d-flex align-items-center">
-            <pre class="mx-2 flex-grow-0">
-              <code class="hlts" data-trim>
+            <pre class="flex-grow-0 mr-5"><code class="p-4 hlts" data-trim>
                 interface Anonymous {
                   name: string;
                 }
@@ -156,8 +214,7 @@
                 type User = 
                   | Anonymous
                   | LoggedUser;
-              </code>
-            </pre>
+              </code></pre>
 
             <div class="union d-flex align-items-center flex-grow-1">
               <div class="d-flex justify-content-between align-items-center">
@@ -173,11 +230,31 @@
             </div>
           </div>
 
+          <aside class="notes">
+            Nesse outro temos um exemplo de dois tipos diferentes de usuário, anônimo e logado, contendo propriedades diferentes dependendo do estado atual dele. 
+            Com uma união de tipo, podemos representar de forma generica os dois tipos de usuário em um mesmo conjunto de dados.
+          </aside>
+
         </section>
       </section>
       </section>
       <section>
         <h2>Type-Guards</h2>
+      </section>
+      <section>
+        <h2>Tuplas</h2>
+        <pre><code class="p-4 hlts" data-trim>
+            type ThreeNumbers = [number, number, number];
+
+            const threeNumbers: ThreeNumbers = [1, 2, 3];
+          </code></pre>
+      </section>
+      <section>
+        <h2>Tipos Condicionais</h2>
+        <pre><code class="p-4 hlts">A extends B ? C : D</code></pre>
+      </section>
+      <section>
+
       </section>
       <section>
         <h1>Perguntas</h1>
