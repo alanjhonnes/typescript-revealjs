@@ -67,6 +67,9 @@
             <span>number</span>
           </div>
           <div class="circle">
+            <span>boolean</span>
+          </div>
+          <div class="circle">
             <span>object</span>
           </div>
           <div class="circle">
@@ -178,7 +181,7 @@
         </section>
 
         <section>
-            <div>string</div>
+          <div>string</div>
           <div class="union d-flex align-items-center">
             <div class="d-flex justify-content-between align-items-center flex-grow-1">
               <div class="circle">
@@ -231,8 +234,10 @@
           </div>
 
           <aside class="notes">
-            Nesse outro temos um exemplo de dois tipos diferentes de usuário, anônimo e logado, contendo propriedades diferentes dependendo do estado atual dele. 
-            Com uma união de tipo, podemos representar de forma generica os dois tipos de usuário em um mesmo conjunto de dados.
+            Nesse outro temos um exemplo de dois tipos diferentes de usuário, anônimo e logado, contendo propriedades
+            diferentes dependendo do estado atual dele.
+            Com uma união de tipo, podemos representar de forma generica os dois tipos de usuário em um mesmo conjunto
+            de dados.
           </aside>
 
         </section>
@@ -240,7 +245,26 @@
       </section>
       <section>
         <h2>Type-Guards</h2>
+
+        <pre class="flex-grow-0 mr-5"><code class="p-4 hlts" data-trim>
+          function isUser(value: any): value is User {
+            return "id" in value && "name" in value;
+          }
+
+          if(isUser(x)) {
+            // x é do tipo User dentro deste bloco de código
+          }
+        </code></pre>
       </section>
+
+      <aside class="notes">
+        Type-Guards são verificadores de tipos que servem para afunilar o tipo em um bloco de código condicional.
+
+        Há os type-guards com base em verificações booleanas e os com base nos operadores typeof, instanceof e in.
+
+        Além disso, podemos definir nossos próprios type-guards em forma de funções
+      </aside>
+
       <section>
         <h2>Tuplas</h2>
         <pre><code class="p-4 hlts" data-trim>
@@ -248,13 +272,43 @@
 
             const threeNumbers: ThreeNumbers = [1, 2, 3];
           </code></pre>
+
+        <aside class="notes">
+          Tuplas são tipos especificos de vetores com tamanho e indices bem definidos.
+          Podem ser usados principalmente para representar os argumentos de uma função.
+        </aside>
       </section>
       <section>
         <h2>Tipos Condicionais</h2>
-        <pre><code class="p-4 hlts">A extends B ? C : D</code></pre>
-      </section>
-      <section>
+        <pre><code class="p-4 hlts" data-trim>A extends B ? C : D</code></pre>
 
+        <aside class="notes">
+          Tipos condicionais se parecem com um if ternário.
+          A clausula extends checa se o tipo A faz parte do conjunto de dados B, caso sim, então o tipo resultante será
+          o tipo C, caso contrário, o tipo D.
+        </aside>
+      </section>
+
+
+      <section>
+        <h2>Mixin classes</h2>
+        <pre><code class="p-4 hlts" data-trim>
+          export type Constructor<T = {}> = new (...args: any[]) => T;
+
+          export function identifiable<TBase extends Constructor>(base: TBase) {
+              return class extends base {
+                  id = v4();
+              }
+          }
+        </code></pre>
+
+        <aside class="notes">
+          Mixins de classes servem para construir classes usando composição ao invés de hieraquia.
+
+          Ajudam a modularizar comportamentos reusáveis.
+
+          Alguns casos de uso incluem composição de comportamentos para componentes e entidades de banco de dados.
+        </aside>
       </section>
       <section>
         <h1>Perguntas</h1>
