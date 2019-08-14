@@ -52,6 +52,7 @@
           <li>Modificadores</li>
           <li>Unions e Discriminated Unions</li>
           <li>Intersection types</li>
+          <li>Mixins</li>
           <li>Type-guards</li>
           <li>Mixins</li>
           <li>Conditional types</li>
@@ -278,6 +279,34 @@
           Podem ser usados principalmente para representar os argumentos de uma função.
         </aside>
       </section>
+
+      <section>
+        <h2>Generics</h2>
+        <pre><code class="p-4 hlts" data-trim>
+          export interface TrackedEntity\<E\> {
+              id: string;
+              data: E;
+          }
+          </code></pre>
+
+        <aside class="notes">
+          
+        </aside>
+      </section>
+
+
+      <section>
+        <h2>Mixin classes</h2>
+
+        <aside class="notes">
+          Mixins de classes servem para construir classes usando composição ao invés de hieraquia.
+
+          Ajudam a modularizar comportamentos reusáveis.
+
+          Alguns casos de uso incluem composição de comportamentos para componentes e entidades de banco de dados.
+        </aside>
+      </section>
+
       <section>
         <h2>Tipos Condicionais</h2>
         <pre><code class="p-4 hlts" data-trim>A extends B ? C : D</code></pre>
@@ -286,28 +315,6 @@
           Tipos condicionais se parecem com um if ternário.
           A clausula extends checa se o tipo A faz parte do conjunto de dados B, caso sim, então o tipo resultante será
           o tipo C, caso contrário, o tipo D.
-        </aside>
-      </section>
-
-
-      <section>
-        <h2>Mixin classes</h2>
-        <pre><code class="p-4 hlts" data-trim>
-          export type Constructor<T = {}> = new (...args: any[]) => T;
-
-          export function identifiable<TBase extends Constructor>(base: TBase) {
-              return class extends base {
-                  id = v4();
-              }
-          }
-        </code></pre>
-
-        <aside class="notes">
-          Mixins de classes servem para construir classes usando composição ao invés de hieraquia.
-
-          Ajudam a modularizar comportamentos reusáveis.
-
-          Alguns casos de uso incluem composição de comportamentos para componentes e entidades de banco de dados.
         </aside>
       </section>
       <section>
