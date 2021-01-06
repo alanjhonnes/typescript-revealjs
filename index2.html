@@ -1,0 +1,394 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>TypeScript - Além do Básico</title>
+
+  <link rel="stylesheet"
+        href="css/reset.css">
+  <link rel="stylesheet"
+        href="css/reveal.css">
+  <link rel="stylesheet"
+        href="css/bootstrap-grid.min.css">
+  <link rel="stylesheet"
+        href="css/theme/mjv.css">
+  <link rel="stylesheet"
+        href="css/presentation.css">
+
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet"
+        href="lib/css/monokai.css">
+
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  </script>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2>
+          TypeScript<br>
+          Além do Básico
+        </h2>
+        <p>Alan Jhonnes</p>
+        <p>Software Architect @ MJV</p>
+      </section>
+      <section>
+        <h2>Tópicos</h2>
+        <ul>
+          <li>Tipos básicos e especiais</li>
+          <li>Tipos utilitários</li>
+          <li>Modificadores</li>
+          <li>Unions e Discriminated Unions</li>
+          <li>Intersection types</li>
+          <li>Mixins</li>
+          <li>Type-guards</li>
+          <li>Mixins</li>
+          <li>Conditional types</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Tipos básicos e primitivos</h2>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="circle">
+            <span>string</span>
+          </div>
+          <div class="circle">
+            <span>number</span>
+          </div>
+          <div class="circle">
+            <span>boolean</span>
+          </div>
+          <div class="circle">
+            <span>object</span>
+          </div>
+          <div class="circle">
+            <span>function</span>
+          </div>
+        </div>
+        <div class="mt-5 fragment">
+          <h2 class="text-left">strictNullsChecks</h2>
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="circle mx-2">
+              <span>null</span>
+            </div>
+            <div class="circle mx-2">
+              <span>undefined</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Os tipos básicos são bem simples, string, number, object para representar a base de um objeto, e também temos
+          'function' para representar as funções.
+          Como as funçoes no javascript são objetos de primeira classe, ou seja, você pode usar funções como valores e
+          armazenar em variáveis.
+
+          Ativando a flag de strictNullChecks, ganhamos mais dois tipos muito importantes, null e undefined. Usados
+          sozinhos, eles não tem muita utilidade,
+          mas veremos como podemos usar esses tipos para tornar nosso código melhor.
+        </aside>
+      </section>
+      <section>
+        <h2>Tipos especiais</h2>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="circle">
+            <span>any</span>
+          </div>
+          <div class="circle">
+            <span>unknown</span>
+          </div>
+          <div class="circle">
+            <span>void</span>
+          </div>
+          <div class="circle">
+            <span>never</span>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Esses tipos servem para representar casos especiais.
+
+          O uso do any serve para basicamente desabilitar a checagem de tipos.
+          Geralmente é usado quando estamos iniciando e não sabemos direito como tipar alguma interface corretamente.
+          No fim dessa palestra, vocês verão que a grande maioria dos casos é facilmente tipável.
+
+          O tipo void é usado para representar uma função sem retorno, é equivalente a usar o undefined, mas de forma
+          mais semântica para indicar realmente que a função não retorna nada.
+
+          O tipo unknown é o inverso do any, serve para quando realmente você quer que o Typescript te force a fazer
+          rigorosas checagens antes de você acessar ou usar a variavél.
+
+          O tipo never representa um tipo que não deveria acontecer nunca. O exemplo mais simples é uma função que
+          sempre dá erro, nunca chegando a finalizar,
+          portanto o tipo da função não é nem void nem undefined e sim, never.
+        </aside>
+      </section>
+      <section>
+        <h2>Modificadores</h2>
+        <ul>
+          <li>Readonly</li>
+          <li>Optional</li>
+        </ul>
+
+        <pre class="flex-grow-0 mr-5"><code class="p-4 hlts" data-trim>
+          interface User {
+            readonly id?: string;
+            name: string;
+          }
+        </code></pre>
+
+
+        <aside class="notes">
+          Os modificadores servem para alterar propriedades de objetos. O modificador readonly é muito útil quando
+          queremos utilizar o conceito de imutabilidade nos nossos projetos.
+
+          O modificador optional serve para indicar que uma propriedade pode ou não estar presente em um objeto.
+          Ela é bem similar ao usar o tipo undefined.
+        </aside>
+      </section>
+      <section>
+        <section>
+          <h2>Unions</h2>
+
+          <div>boolean</div>
+          <div class="union d-flex align-items-center">
+            <div class="d-flex justify-content-center align-items-center flex-grow-1">
+              <div class="circle mx-4 flex-grow-1">
+                <span>true</span>
+              </div>
+              <div class="circle mx-4 flex-grow-1">
+                <span>false</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="notes">
+            As uniões servem para representar conjuntos de tipos.
+            Um exemplo bem simples é o conjunto de booleanos, onde boolean é a união de dois tipos, o tipo true e o tipo
+            false.
+          </aside>
+        </section>
+
+        <section>
+          <div>string</div>
+          <div class="union d-flex align-items-center">
+            <div class="d-flex justify-content-between align-items-center flex-grow-1">
+              <div class="circle">
+                <span>'a'</span>
+              </div>
+              <div class="circle">
+                <span>'b'</span>
+              </div>
+              <div class="circle">
+                <span>'...'</span>
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            O tipo string é um conjunto de todos os tipos possiveis de strings, como 'a', 'b' ou 'c'.
+          </aside>
+        </section>
+
+        <section>
+          <div>User</div>
+          <div class="d-flex align-items-center">
+            <pre class="flex-grow-0 mr-5"><code class="p-4 hlts" data-trim>
+                interface Anonymous {
+                  name: string;
+                }
+
+                interface LoggedUser {
+                  id: string;
+                  name: string;
+                  email: string;
+                }
+
+                type User = 
+                  | Anonymous
+                  | LoggedUser;
+              </code></pre>
+
+            <div class="union d-flex align-items-center flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="circle mx-2">
+                  <span>
+                    Anonymous
+                  </span>
+                </div>
+                <div class="circle mx-2">
+                  <span>LoggedUser</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="notes">
+            Nesse outro temos um exemplo de dois tipos diferentes de usuário, anônimo e logado, contendo propriedades
+            diferentes dependendo do estado atual dele.
+            Com uma união de tipo, podemos representar de forma generica os dois tipos de usuário em um mesmo conjunto
+            de dados.
+          </aside>
+
+        </section>
+      </section>
+
+      <section>
+        <h2>Tuplas</h2>
+        <pre><code class="p-4 hlts" data-trim>
+            type ThreeNumbers = [number, number, number];
+
+            const threeNumbers: ThreeNumbers = [1, 2, 3];
+          </code></pre>
+
+        <aside class="notes">
+          Tuplas são tipos especificos de vetores com tamanho e indices bem definidos.
+          Podem ser usados principalmente para representar os argumentos de uma função.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Generics</h2>
+        <pre><code class="p-4 hlts" data-trim>
+          interface TrackedEntity&lt;E&gt; {
+              id: string;
+              data: E;
+          }
+          </code></pre>
+
+        <aside class="notes">
+
+        </aside>
+      </section>
+
+      <section>
+        <h2>Mapped-Types</h2>
+
+        <pre class="flex-grow-0 mr-5"><code class="p-4 hlts" data-trim>
+            type Record&lt;K extends keyof any, T&gt; = {
+                [P in K]: T;
+            };
+        </code></pre>
+
+
+        <aside class="notes">
+
+        </aside>
+      </section>
+
+      <section>
+        <h2>Type-Guards</h2>
+
+        <pre class="flex-grow-0 mr-5"><code class="p-4 hlts" data-trim>
+          function isUser(value: any): value is User {
+            return "id" in value && "name" in value;
+          }
+
+          if(isUser(x)) {
+            // x é do tipo User dentro deste bloco de código
+          }
+        </code></pre>
+
+
+        <aside class="notes">
+          Type-Guards são verificadores de tipos que servem para afunilar o tipo em um bloco de código condicional.
+
+          Há os type-guards com base em verificações booleanas e os com base nos operadores typeof, instanceof e in.
+
+          Além disso, podemos definir nossos próprios type-guards em forma de funções
+        </aside>
+      </section>
+
+      <section>
+        <section>
+          <h2>Tipos Utilitarios</h2>
+          <ul>
+            <li>Partial&lt;T&gt;</li>
+            <li>Readonly&lt;T&gt;</li>
+            <li>Record&lt;T&gt;</li>
+            <li>Pick&lt;T, K&gt;</li>
+            <li>Omit&lt;T, K&gt;</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Tipos Utilitarios</h2>
+          <ul>
+            <li>Exclude&lt;T, U&gt;</li>
+            <li>Extract&lt;T, U&gt;</li>
+            <li>NonNullable&lt;T&gt;</li>
+            <li>ReturnType&lt;T&gt;</li>
+            <li>InstanceType&lt;T&gt;</li>
+            <li>Required&lt;T&gt;</li>
+            <li>ThisType&lt;T&gt;</li>
+          </ul>
+
+        </section>
+      </section>
+
+      <section>
+        <h2>Mixin classes</h2>
+        <pre><code class="p-4 hlts" data-trim>
+
+      function identifiable&lt;T extends Constructor&gt;(base: T) {
+        return class extends base {
+            id = v4();
+        }
+      }
+    </code></pre>
+
+        <aside class="notes">
+          Mixins de classes servem para construir classes usando composição ao invés de hieraquia.
+
+          Ajudam a modularizar comportamentos reusáveis.
+
+          Alguns casos de uso incluem composição de comportamentos para componentes e entidades de banco de dados.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Tipos Condicionais</h2>
+        <pre><code class="p-4 hlts" data-trim>A extends B ? C : D</code></pre>
+
+        <aside class="notes">
+          Tipos condicionais se parecem com um if ternário.
+          A clausula extends checa se o tipo A faz parte do conjunto de dados B, caso sim, então o tipo resultante será
+          o tipo C, caso contrário, o tipo D.
+        </aside>
+      </section>
+      <section>
+        <h1>Perguntas</h1>
+      </section>
+      <section>
+        <h1>Obrigado!</h1>
+      </section>
+    </div>
+  </div>
+
+  <script src="js/reveal.js"></script>
+
+  <script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+      dependencies: [
+        { src: 'plugin/markdown/marked.js' },
+        { src: 'plugin/markdown/markdown.js' },
+        { src: 'plugin/notes/notes.js', async: true },
+        { src: 'plugin/highlight/highlight.js', async: true }
+      ]
+    });
+  </script>
+</body>
+
+</html>
